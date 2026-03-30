@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-// ✅ GET (para probar en navegador)
+// ✅ GET (para evitar error 404)
 router.get('/', (req, res) => {
   res.json([
     {
@@ -12,12 +12,16 @@ router.get('/', (req, res) => {
   ]);
 });
 
-// ✅ POST (el que ya tienes)
+// ✅ POST (crear alquiler)
 router.post('/', (req, res) => {
   const { autoId } = req.body;
 
+  if (!autoId) {
+    return res.status(400).json({ mensaje: 'autoId es requerido' });
+  }
+
   res.status(201).json({
-    mensaje: 'Alquiler creado',
+    mensaje: 'Alquiler creado correctamente',
     autoId: autoId
   });
 });
