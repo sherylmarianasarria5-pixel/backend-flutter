@@ -1,11 +1,25 @@
 const express = require('express');
 const router = express.Router();
-const alquilerController = require('../controller/alquilercontroller');
 
-// Ruta para registrar un nuevo alquiler
-router.post('/', alquilerController.realizarAlquiler);
+// ✅ GET (para probar en navegador)
+router.get('/', (req, res) => {
+  res.json([
+    {
+      id: 1,
+      autoId: 1,
+      estado: 'activo'
+    }
+  ]);
+});
 
-// Ruta para obtener el historial de alquileres
-router.get('/historial', alquilerController.historial);
+// ✅ POST (el que ya tienes)
+router.post('/', (req, res) => {
+  const { autoId } = req.body;
+
+  res.status(201).json({
+    mensaje: 'Alquiler creado',
+    autoId: autoId
+  });
+});
 
 module.exports = router;
