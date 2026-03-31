@@ -1,31 +1,23 @@
+const Sequelize = require('sequelize');
 require('dotenv').config();
 
-module.exports = {
-  development: {
-    use_env_variable: 'DATABASE_URL',
+let sequelize;
+
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], {
     dialect: 'postgres',
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false, // Permite conexiones SSL sin verificación estricta de certificado
-      },
-    },
-  },
-  test: {
-    username: 'root',
-    password: null,
-    database: 'database_test',
-    host: '127.0.0.1',
-    dialect: 'mysql',
-  },
-  production: {
-    use_env_variable: 'DATABASE_URL',
-    dialect: 'postgres',
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-  }
-};
+        rejectUnauthorized: false
+      }
+    }
+  });
+} else {
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
+}
