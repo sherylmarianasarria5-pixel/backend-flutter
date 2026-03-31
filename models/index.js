@@ -6,12 +6,15 @@ const Sequelize = require('sequelize');
 
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.js')[env];
+const configFile = require(__dirname + '/../config/config.js');
+
+const config = configFile[env];
 
 const db = {};
 
 let sequelize;
 
+// ✅ Manejo correcto de DATABASE_URL en producción
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], {
     dialect: 'postgres',
@@ -31,6 +34,7 @@ if (config.use_env_variable) {
   );
 }
 
+// Cargar modelos
 fs.readdirSync(__dirname)
   .filter(file =>
     file.indexOf('.') !== 0 &&
@@ -45,6 +49,7 @@ fs.readdirSync(__dirname)
     db[model.name] = model;
   });
 
+// Asociaciones
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
