@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize');
 require('dotenv').config();
 
+const config = require(__dirname + '/../config/config.js')[process.env.NODE_ENV || 'development'];
+
 let sequelize;
 
 if (config.use_env_variable) {
